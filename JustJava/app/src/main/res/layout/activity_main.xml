@@ -11,10 +11,12 @@
     tools:context="com.example.android.justjava.MainActivity">
 
     <TextView
+        android:id="@+id/quantity_text_view"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:paddingBottom="16dp"
-        android:text="QUANTITY" />
+        android:text="Quantity"
+        android:textAllCaps="true" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -27,5 +29,6 @@
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="ORDER" />
+        android:text="Order"
+        android:onClick="submitOrder" />
 </LinearLayout>
