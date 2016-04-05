@@ -48,6 +48,17 @@ public class MainActivity extends ActionBarActivity {
      */
     private void displayPrice(int number) {
         TextView priceTextView = (TextView)findViewById(R.id.price_text_view);
-        priceTextView.setText(NumberFormat.getCurrencyInstance().format(number));
+        String price = "Total: ";
+        price = price + NumberFormat.getCurrencyInstance().format(number);
+        price = price + "\nThank you!";
+        priceTextView.setText(price);
+    }
+
+    /**
+     * This method displays the given text on the screen.
+     */
+    private void displayMessage(String message) {
+        TextView priceTextView = (TextView)findViewById(R.id.price_text_view);
+        priceTextView.setText(message);
     }
 }
