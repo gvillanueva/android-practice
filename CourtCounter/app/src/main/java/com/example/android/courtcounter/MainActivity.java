@@ -15,6 +15,20 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
     }
 
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        outState.putInt("TeamAScore", m_TeamAScore);
+        outState.putInt("TeamBScore", m_TeamBScore);
+        super.onSaveInstanceState(outState);
+    }
+
+    @Override
+    public void onRestoreInstanceState(Bundle inState) {
+        super.onRestoreInstanceState(inState);
+        addToTeamA(inState.getInt("TeamAScore"));
+        addToTeamB(inState.getInt("TeamBScore"));
+    }
+
     public void addThreeForTeamA(View view) {
         addToTeamA(3);
     }
