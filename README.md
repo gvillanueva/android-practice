@@ -5,4 +5,4 @@ Garbage apps for building my Android development experience.  Developed by follo
 * **HappyBirthday** - A virtual birthday card.
 * **Hello** - Your run-of-the-mill "Hello, world!" application.
 * **JustJava** - Order coffee and learn the basics of layouts and event handling.
- 
+* **Sunshine** - Lists the weather forecast and provides detailed days.
