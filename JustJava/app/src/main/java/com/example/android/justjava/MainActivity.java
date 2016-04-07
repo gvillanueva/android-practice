@@ -1,7 +1,10 @@
 package com.example.android.justjava;
 
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.CheckBox;
 import android.widget.EditText;
@@ -10,7 +13,7 @@ import android.widget.Toast;
 
 import java.text.NumberFormat;
 
-public class MainActivity extends ActionBarActivity {
+public class MainActivity extends AppCompatActivity {
 
     int quantity = 0;
 
@@ -27,8 +30,14 @@ public class MainActivity extends ActionBarActivity {
         CheckBox cbWhippedCream = (CheckBox)findViewById(R.id.cbWhippedCream);
         CheckBox cbChocolate = (CheckBox)findViewById(R.id.cbChocolate);
         EditText txtName = (EditText)findViewById(R.id.txtName);
+
+        // Calculate order and generate order summary
         int price = calculatePrice(quantity, cbWhippedCream.isChecked(), cbChocolate.isChecked());
-        displayPrice(price, cbWhippedCream.isChecked(), cbChocolate.isChecked(), txtName.getText().toString());
+        String orderSummary = getOrderSummary(price, cbWhippedCream.isChecked(),
+                                              cbChocolate.isChecked(), txtName.getText().toString());
+
+        // Output the order summary
+        emailOrderSummary(txtName.getText().toString(), orderSummary);
     }
 
     public void increment(View view) {
@@ -58,26 +67,23 @@ public class MainActivity extends ActionBarActivity {
         if (wantsChocolate) basePrice += 2;
         return basePrice * quantity;
     }
-    /**
-     * This method displays the given quantity value on the screen.
-     */
-    private void displayPrice(int price, boolean wantsWhippedCream, boolean wantsChocolate,
-                              String name) {
-        TextView priceTextView = (TextView)findViewById(R.id.price_text_view);
-        String orderSummary = String.format("Name: %s\n"+
-                                            "Add whipped cream? %b\n"+
-                                            "Add chocolate? %b\n"+
-                                            "Total: %s\nThank you!",
-                                            name, wantsWhippedCream, wantsChocolate,
-                                            NumberFormat.getCurrencyInstance().format(price));
-        priceTextView.setText(orderSummary);
+
+    private String getOrderSummary(int price, boolean wantsWhippedCream, boolean wantsChocolate,
+                                   String name) {
+        return String.format("Name: %s\n"+
+                             "Add whipped cream? %b\n"+
+                             "Add chocolate? %b\n"+
+                             "Total: %s\nThank you!",
+                             name, wantsWhippedCream, wantsChocolate,
+                             NumberFormat.getCurrencyInstance().format(price));
     }
 
-    /**
-     * This method displays the given text on the screen.
-     */
-    private void displayMessage(String message) {
-        TextView priceTextView = (TextView)findViewById(R.id.price_text_view);
-        priceTextView.setText(message);
+    private void emailOrderSummary(String name, String orderSummary) {
+        Intent emailIntent = new Intent(Intent.ACTION_SENDTO);
+        emailIntent.setData(Uri.parse("mailto:"));
+        emailIntent.putExtra(Intent.EXTRA_SUBJECT, "JustJava order for " + name);
+        emailIntent.putExtra(Intent.EXTRA_TEXT, orderSummary);
+        if (emailIntent.resolveActivity(getPackageManager()) != null)
+            startActivity(emailIntent);
     }
 }
