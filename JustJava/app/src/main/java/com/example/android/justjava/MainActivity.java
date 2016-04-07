@@ -27,7 +27,8 @@ public class MainActivity extends ActionBarActivity {
         CheckBox cbWhippedCream = (CheckBox)findViewById(R.id.cbWhippedCream);
         CheckBox cbChocolate = (CheckBox)findViewById(R.id.cbChocolate);
         EditText txtName = (EditText)findViewById(R.id.txtName);
-        displayPrice(quantity, cbWhippedCream.isChecked(), cbChocolate.isChecked(), txtName.getText().toString());
+        int price = calculatePrice(quantity, cbWhippedCream.isChecked(), cbChocolate.isChecked());
+        displayPrice(price, cbWhippedCream.isChecked(), cbChocolate.isChecked(), txtName.getText().toString());
     }
 
     public void increment(View view) {
@@ -51,19 +52,25 @@ public class MainActivity extends ActionBarActivity {
         quantityTextView.setText("" + number);
     }
 
+    private int calculatePrice(int quantity, boolean wantsWhippedCream, boolean wantsChocolate) {
+        int basePrice = 5;
+        if (wantsWhippedCream) basePrice += 1;
+        if (wantsChocolate) basePrice += 2;
+        return basePrice * quantity;
+    }
     /**
      * This method displays the given quantity value on the screen.
      */
-    private void displayPrice(int quantity, boolean wantsWhippedCream, boolean wantsChocolate,
+    private void displayPrice(int price, boolean wantsWhippedCream, boolean wantsChocolate,
                               String name) {
-        int total = 5;
-        if (wantsWhippedCream) total += 1;
-        if (wantsChocolate) total += 2;
-        total *= quantity;
         TextView priceTextView = (TextView)findViewById(R.id.price_text_view);
-        String price = String.format("Name: %s\nAdd whipped cream? %b\nAdd chocolate? %b\nTotal: %s\nThank you!",
-                name, wantsWhippedCream, wantsChocolate, NumberFormat.getCurrencyInstance().format(total));
-        priceTextView.setText(price);
+        String orderSummary = String.format("Name: %s\n"+
+                                            "Add whipped cream? %b\n"+
+                                            "Add chocolate? %b\n"+
+                                            "Total: %s\nThank you!",
+                                            name, wantsWhippedCream, wantsChocolate,
+                                            NumberFormat.getCurrencyInstance().format(price));
+        priceTextView.setText(orderSummary);
     }
 
     /**
