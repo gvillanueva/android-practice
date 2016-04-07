@@ -41,14 +41,16 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void increment(View view) {
+        String max_coffee = getString(R.string.max_coffees);
         if (quantity < 300) quantity++;
-        else Toast.makeText(this, "You cannot have more than 300 cups of coffee", Toast.LENGTH_SHORT).show();
+        else Toast.makeText(this, max_coffee, Toast.LENGTH_SHORT).show();
         display(quantity);
     }
 
     public void decrement(View view) {
+        String min_coffees = getString(R.string.min_coffees);
         if (quantity > 0) quantity--;
-        else Toast.makeText(this, "You cannot have less than 0 cups of coffee", Toast.LENGTH_SHORT).show();
+        else Toast.makeText(this, min_coffees, Toast.LENGTH_SHORT).show();
         display(quantity);
     }
 
@@ -70,18 +72,16 @@ public class MainActivity extends AppCompatActivity {
 
     private String getOrderSummary(int price, boolean wantsWhippedCream, boolean wantsChocolate,
                                    String name) {
-        return String.format("Name: %s\n"+
-                             "Add whipped cream? %b\n"+
-                             "Add chocolate? %b\n"+
-                             "Total: %s\nThank you!",
-                             name, wantsWhippedCream, wantsChocolate,
+        String order_summary_format = getString(R.string.order_summary_format);
+        return String.format(order_summary_format, name, wantsWhippedCream, wantsChocolate,
                              NumberFormat.getCurrencyInstance().format(price));
     }
 
     private void emailOrderSummary(String name, String orderSummary) {
+        String email_subject = getString(R.string.email_subject);
         Intent emailIntent = new Intent(Intent.ACTION_SENDTO);
         emailIntent.setData(Uri.parse("mailto:"));
-        emailIntent.putExtra(Intent.EXTRA_SUBJECT, "JustJava order for " + name);
+        emailIntent.putExtra(Intent.EXTRA_SUBJECT, email_subject + name);
         emailIntent.putExtra(Intent.EXTRA_TEXT, orderSummary);
         if (emailIntent.resolveActivity(getPackageManager()) != null)
             startActivity(emailIntent);

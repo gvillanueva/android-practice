@@ -1,0 +1,13 @@
+<resources>
+    <string name="app_name">SimpleJava</string>
+    <string name="name_hint">Nombre</string>
+    <string name="toppings">Cubiertas</string>
+    <string name="whipped_cream">Crema batida</string>
+    <string name="chocolate">Chocolate</string>
+    <string name="quantity">Cantidad</string>
+    <string name="order">Orden</string>
+    <string name="email_subject">Pedido de SimpleJava para </string>
+    <string name="order_summary_format">Nombre: %1$s\nIncluye crema batida? %2$b\nIncluye chocolate? %3$b\nTotal: %4$s\nMuchas gracias!</string>
+    <string name="max_coffees">No se puede tener más de 300 tazas de café</string>
+    <string name="min_coffees">No se puede tener menos de 0 tazas de café</string>
+</resources>
