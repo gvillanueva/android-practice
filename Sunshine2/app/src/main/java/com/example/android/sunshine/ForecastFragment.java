@@ -37,8 +37,9 @@ import java.util.ArrayList;
 /**
  * A placeholder fragment containing a simple view.
  */
-public class ForecastFragment extends Fragment {
-
+public class ForecastFragment extends Fragment
+                              implements SharedPreferences.OnSharedPreferenceChangeListener
+{
     private ArrayAdapter<String> mForecastAdapter;
 
     public ForecastFragment() {
@@ -62,6 +63,14 @@ public class ForecastFragment extends Fragment {
          * Prepare the weather high/lows for presentation.
          */
         private String formatHighLows(double high, double low) {
+            SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
+            String units = sharedPreferences.getString(getString(R.string.pref_units_key),
+                    getString(R.string.pref_units_metric_value));
+
+            if (units.equals(getString(R.string.pref_units_imperial_value))) {
+                high = high * 1.8 + 32;
+                low = low * 1.8 + 32;
+            }
             // For presentation, assume the user doesn't care about tenths of a degree.
             long roundedHigh = Math.round(high);
             long roundedLow = Math.round(low);
@@ -253,11 +262,25 @@ public class ForecastFragment extends Fragment {
     }
 
     @Override
+    public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
+        if (key.equals("units")) {
+            String location = sharedPreferences.getString(getString(R.string.pref_location_key),
+                    getString(R.string.pref_location_default));
+            new FetchWeatherTask().execute(location);
+        }
+    }
+
+    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_main, container, false);
 
-        new FetchWeatherTask().execute("97202,us");
+        // Launch initial HTTP request
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getContext());
+        String location = sharedPreferences.getString(getString(R.string.pref_location_key),
+                getString(R.string.pref_location_default));
+        new FetchWeatherTask().execute(location);
+
         mForecastAdapter = new ArrayAdapter<String>(
                 getContext(), R.layout.list_item_forecast,
                 R.id.list_item_forecast_textview);

@@ -7,4 +7,10 @@
     <string name="pref_location_label">Location</string>
     <string name="pref_location_key" translatable="false">location</string>
     <string name="pref_location_default" translatable="false">97202</string>
+    <string name="pref_units_title">Temperature Units</string>
+    <string name="pref_units_key">units</string>
+    <string name="pref_units_metric_entry">Metric</string>
+    <string name="pref_units_metric_value">metric</string>
+    <string name="pref_units_imperial_entry">Imperial</string>
+    <string name="pref_units_imperial_value">imperial</string>
 </resources>
