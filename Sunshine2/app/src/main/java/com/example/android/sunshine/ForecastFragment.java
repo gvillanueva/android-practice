@@ -1,9 +1,11 @@
 package com.example.android.sunshine;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
+import android.preference.PreferenceManager;
 import android.support.annotation.MenuRes;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
@@ -217,6 +219,7 @@ public class ForecastFragment extends Fragment {
 
         @Override
         protected void onPostExecute(String[] strings) {
+            mForecastAdapter.clear();
             for(String dayForecastStr : strings) {
                 mForecastAdapter.add(dayForecastStr);
             }
@@ -239,7 +242,10 @@ public class ForecastFragment extends Fragment {
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
         if (id == R.id.action_refresh) {
-            new FetchWeatherTask().execute("97202,us");
+            SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getContext());
+            String location = sharedPreferences.getString(getString(R.string.pref_location_key),
+                                                          getString(R.string.pref_location_default));
+            new FetchWeatherTask().execute(location);
             return true;
         }
 
