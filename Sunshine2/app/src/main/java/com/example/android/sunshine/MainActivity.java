@@ -1,7 +1,10 @@
 package com.example.android.sunshine;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.net.Uri;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
@@ -9,6 +12,9 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Toast;
+
+import java.net.URL;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -38,6 +44,20 @@ public class MainActivity extends AppCompatActivity {
         if (id == R.id.action_settings) {
             startActivity(new Intent(this, SettingsActivity.class));
             return true;
+        }
+        else if (id == R.id.action_location) {
+            // Read preferred location
+            SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+            String location = sharedPreferences.getString(getString(R.string.pref_location_key),
+                                                          getString(R.string.pref_units_metric_value));
+
+            // Create maps intent and attempt to start it
+            Uri geoLocation = Uri.parse("geo:0,0").buildUpon().appendQueryParameter("q", location).build();
+            Intent mapIntent = new Intent(Intent.ACTION_VIEW).setData(geoLocation);
+            if (mapIntent.resolveActivity(getPackageManager()) != null)
+                startActivity(mapIntent);
+            else
+                Toast.makeText(this, R.string.missing_maps_intent, Toast.LENGTH_SHORT).show();
         }
 
         return super.onOptionsItemSelected(item);
